@@ -192,7 +192,7 @@ function App() {
             color: "#a50202",
           }}
         >
-          {err.message}
+          {err.data && err.data.message ? err.data.message : err.message}
         </p>
       )}
     </Wrapper>

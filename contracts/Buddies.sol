@@ -16,7 +16,7 @@ contract BuddieThePlatypus is
     Ownable
 {
     uint256 TOTAL = 999;
-    uint256 count = 0;
+    uint256 count = 1;
     uint256 price = 0;
     string URI;
 

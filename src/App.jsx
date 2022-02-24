@@ -5,7 +5,7 @@ import contract from "../build/contracts/BuddieThePlatypus.json";
 import buddie from "../assets/buddie.png";
 import ReactLoading from "react-loading";
 
-const contractAddress = "0x37a47078F953492E213bAdf63247585AE46030f8";
+const contractAddress = "0x3fD3Cf03b659A0860D9bd897b6039B77001Cf359";
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,6 +48,18 @@ const Input = styled.input`
   text-align: center;
 `;
 
+const Banner = styled.div`
+  width: 100%;
+  height: 72px;
+  display: ${({ visible }) => (visible ? "flex" : "none")};
+  background-color: #f1592a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+`;
+
 function App() {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [cost, setCost] = useState("15");
@@ -56,6 +68,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [hash, setHash] = useState();
   const [err, setErr] = useState();
+  const [chain, setChain] = useState();
 
   const connectWalletHandler = async () => {
     const { ethereum } = window;
@@ -69,10 +82,13 @@ function App() {
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
+
         setCurrentAccount(accounts[0]);
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
+        const { chainId } = await provider.detectNetwork();
 
+        setChain(chainId);
         const nftContract = new ethers.Contract(
           contractAddress,
           contract.abi,
@@ -125,12 +141,15 @@ function App() {
 
   return (
     <Wrapper>
+      <Banner visible={chain != 80001}>
+        Polygon Test network (Mumbai) needed!
+      </Banner>
       <img src={buddie} />
       <h1 style={{ fontSize: "48px" }}>Buddie The Platypus</h1>
       {currentAccount && (
         <>
           <h2 style={{ fontSize: "48px" }}>
-            {total}/999 @ {cost} matic
+            {total}/999 @ {cost} (test)matic
           </h2>
           <div style={{ display: "flex", marginTop: "36px" }}>
             <CButton onClick={() => setMintnum((v) => v + 1)}>+</CButton>
@@ -143,7 +162,6 @@ function App() {
           </div>
         </>
       )}
-
       {loading ? (
         <div style={{ marginTop: "36px" }}>
           <ReactLoading type="spin"></ReactLoading>
@@ -151,7 +169,7 @@ function App() {
       ) : (
         <Button
           onClick={currentAccount ? mintNFTHandler : connectWalletHandler}
-          disabled={!mintNum && currentAccount}
+          disabled={!mintNum && currentAccount && chain !== 8001}
         >
           {currentAccount ? (mintNum ? "Mint" : "How many?") : "Connect Wallet"}
         </Button>

@@ -5,7 +5,7 @@ import contract from "../build/contracts/BuddieThePlatypus.json";
 import buddie from "../assets/buddie.png";
 import ReactLoading from "react-loading";
 
-const contractAddress = "0x3fD3Cf03b659A0860D9bd897b6039B77001Cf359";
+const contractAddress = "0xc51630A770bEf9D47db95DC2eE14b540D5A01376";
 
 const Wrapper = styled.div`
   display: flex;
@@ -97,7 +97,7 @@ function App() {
 
         let num = await nftContract.getTotal();
         let price = await nftContract.getPrice();
-        setCost(price.toString());
+        setCost(ethers.utils.formatEther(price));
         setTotal(num.toString());
         setLoading(false);
       } catch (error) {
@@ -118,12 +118,12 @@ function App() {
       );
 
       let nftTxn = await nftContract.publicMint(mintNum, {
-        value: ethers.utils.parseEther(`${parseInt(mintNum) * parseInt(cost)}`),
+        value: ethers.utils.parseEther(`${parseInt(mintNum) * cost}`),
       });
       setHash(null);
       setLoading(true);
       console.log("Mining... Please wait.");
-      await nftTxn.wait(2);
+      await nftTxn.wait();
       console.log("Mined!", nftTxn.hash);
       let newTotal = await nftContract.getTotal();
       setTotal(newTotal.toString());
@@ -141,15 +141,13 @@ function App() {
 
   return (
     <Wrapper>
-      <Banner visible={chain != 80001}>
-        Polygon Test network (Mumbai) needed!
-      </Banner>
+      <Banner visible={chain != 137}>Polygon network needed!</Banner>
       <img src={buddie} />
       <h1 style={{ fontSize: "48px" }}>Buddie The Platypus</h1>
       {currentAccount && (
         <>
           <h2 style={{ fontSize: "48px" }}>
-            {total}/999 @ {cost} (test)matic
+            {total}/999 @ {cost} matic
           </h2>
           <div style={{ display: "flex", marginTop: "36px" }}>
             <CButton onClick={() => setMintnum((v) => v + 1)}>+</CButton>

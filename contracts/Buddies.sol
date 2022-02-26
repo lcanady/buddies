@@ -16,8 +16,8 @@ contract BuddieThePlatypus is
     Ownable
 {
     uint256 TOTAL = 999;
-    uint256 count = 1;
-    uint256 price = 0;
+    uint256 count = 0;
+    uint256 price = 12000000000000000000;
     string URI;
 
     constructor(
@@ -37,8 +37,11 @@ contract BuddieThePlatypus is
         require(msg.value >= price * _count, "Not enough Matic to mint.");
         require(count + _count <= TOTAL, "Can't mind that many Buddies.");
 
-        _mint(msg.sender, count);
-        count = count + _count;
+        // Hashlips generator starts at 1, but count needs to start at 0, so adding
+        // +1 to count to get tokenId.
+        _mint(msg.sender, count + 1);
+
+        count = count += 1;
     }
 
     /**

@@ -62,6 +62,15 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true,
     },
+    matic_main: {
+      provider: () =>
+        new HDWalletProvider(process.env.KEY_MAIN, `https://polygon-rpc.com`),
+      network_id: 137,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+      gasPrice: 470000000000,
+    },
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

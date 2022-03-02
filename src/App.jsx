@@ -143,7 +143,7 @@ function App() {
     <Wrapper>
       <Banner visible={chain != 137}>Polygon network needed!</Banner>
       <img src={buddie} />
-      <h1 style={{ fontSize: "48px" }}>Buddie The Platypus</h1>
+      <h1 style={{ fontSize: "48px" }}>Buddie The Giraffe</h1>
       {currentAccount && (
         <>
           <h2 style={{ fontSize: "48px" }}>
@@ -175,7 +175,7 @@ function App() {
       {hash && (
         <a
           target="_blank"
-          href={`https://mumbai.polygonscan.com/tx/${hash}`}
+          href={`https://polygonscan.com/tx/${hash}`}
           style={{ marginTop: "36px", textDecoration: "none" }}
         >
           "Transaction Successful!"

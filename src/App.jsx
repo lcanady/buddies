@@ -117,8 +117,8 @@ function App() {
         signer
       );
 
-      let nftTxn = await nftContract.publicMint(mintNum, {
-        value: ethers.utils.parseEther(`${parseInt(mintNum) * cost}`),
+      let nftTxn = await nftContract.publicMint(1, {
+        value: ethers.utils.parseEther(cost),
       });
       setHash(null);
       setLoading(true);
@@ -145,20 +145,9 @@ function App() {
       <img src={buddie} />
       <h1 style={{ fontSize: "48px" }}>Buddie The Giraffe</h1>
       {currentAccount && (
-        <>
-          <h2 style={{ fontSize: "48px" }}>
-            {total}/999 @ {cost} matic
-          </h2>
-          <div style={{ display: "flex", marginTop: "36px" }}>
-            <CButton onClick={() => setMintnum((v) => v + 1)}>+</CButton>
-            <Input placeholder={0} readOnly value={mintNum} />
-            <CButton
-              onClick={() => setMintnum((v) => (v - 1 >= 0 ? v - 1 : 0))}
-            >
-              -
-            </CButton>
-          </div>
-        </>
+        <h2 style={{ fontSize: "48px" }}>
+          {total}/999 @ {cost} matic
+        </h2>
       )}
       {loading ? (
         <div style={{ marginTop: "36px" }}>
@@ -167,9 +156,9 @@ function App() {
       ) : (
         <Button
           onClick={currentAccount ? mintNFTHandler : connectWalletHandler}
-          disabled={!mintNum && currentAccount && chain !== 8001}
+          disabled={currentAccount && chain !== 137}
         >
-          {currentAccount ? (mintNum ? "Mint" : "How many?") : "Connect Wallet"}
+          {currentAccount ? "Mint!" : "Connect Wallet"}
         </Button>
       )}
       {hash && (
